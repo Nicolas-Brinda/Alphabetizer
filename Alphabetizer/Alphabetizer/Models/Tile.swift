@@ -9,7 +9,7 @@ class Tile: Identifiable {
     var word: String
     var position: CGPoint = .zero
     // When flipped, show a checkmark instead of the word and icon
-    var flipped = true
+    var flipped = false
 
 
     init(word: String) {
