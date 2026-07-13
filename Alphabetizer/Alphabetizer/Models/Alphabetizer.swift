@@ -3,9 +3,9 @@ import Foundation
 
 @Observable
 class Alphabetizer {
-    private let tileCount = 3
+    private let tileCount = 4
     private var vocab: Vocabulary
-
+    
 
     var tiles = [Tile]()
     var score = 0
