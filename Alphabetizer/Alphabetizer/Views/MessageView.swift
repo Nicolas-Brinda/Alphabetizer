@@ -11,7 +11,6 @@ struct MessageView: View {
     }
 }
 
-
 #Preview {
     let alphabetizer = Alphabetizer()
         alphabetizer.message = .youWin

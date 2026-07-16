@@ -4,41 +4,45 @@ import SwiftUI
 struct TileView: View {
     var tile: Tile
 
-
     private let borderWidth = 5.0
 
-
     var body: some View {
-        VStack {
-            if tile.flipped {
-                Image(systemName: "checkmark")
-                    .font(Font.system(size: 120))
-                    .foregroundStyle(Color.green)
-                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-            } else {
-                Text(tile.icon)
-                    .font(Font.system(size: 80))
-                Text(tile.word)
-                    .font(.title)
+        GeometryReader { geometry in
+            let contentSize = min(geometry.size.width, geometry.size.height)
+            let padding = max(contentSize * 0.08, 4)
+            let iconSize = contentSize * 0.42
+            let wordSize = contentSize * 0.16
+            let checkmarkSize = contentSize * 0.55
+
+            ZStack {
+                if tile.flipped {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: checkmarkSize, weight: .semibold))
+                        .foregroundStyle(Color.green)
+                        .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    VStack(spacing: contentSize * 0.04) {
+                        Text(tile.icon)
+                            .font(.system(size: iconSize))
+                            .lineLimit(1)
+
+                        Text(tile.word)
+                            .font(.system(size: wordSize, weight: .semibold))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
+                    }
+                    .padding(padding)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
             }
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .background(Color.purple.opacity(0.5))
+            .rotation3DEffect(.degrees(tile.flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+            .animation(.default, value: tile.flipped)
         }
-        .frame(width: Tile.size - borderWidth * 2, height: Tile.size - borderWidth * 2)
-        .overlay(RoundedRectangle(cornerRadius: 16).stroke(borderStyle(), lineWidth: borderWidth))
-        .background(Color.purple.opacity(0.5))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .rotation3DEffect(.degrees(tile.flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
-        .animation(.default, value: tile.flipped)
-
-
     }
 
-
-    func borderStyle() -> some ShapeStyle {
-        return LinearGradient(colors: [
-            Color(red: 157.0/255.0, green: 153.0/255.0, blue: 244.0/255.0),
-            Color(red: 246.0/255.0, green: 206.0/255.0, blue: 241.0/255.0),
-        ], startPoint: .topLeading, endPoint: .bottomTrailing)
-    }
 }
 
 
